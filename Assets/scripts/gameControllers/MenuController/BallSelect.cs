@@ -13,7 +13,10 @@ public class BallSelect : MonoBehaviour {
 
 	public void SelectBall () {
 		int index = int.Parse (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
-		print (index);
+
+		if (GameController.instance != null) {
+			GameController.instance.SetBallIndex (index);
+		}
 	}
 
 	private void GetButtonsAndAddListeners () {
