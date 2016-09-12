@@ -16,14 +16,14 @@ public class GameController : MonoBehaviour {
 
 	private void OnLevelWasLoaded () {
 		if (SceneManager.GetActiveScene ().name == "main") {
-			CreateBall (index);
+			CreateBall ();
 		}
 	}
 	public void SetBallIndex (int index) {
 		this.index = index;
 	}
 
-	public void CreateBall (int index) {
+	public void CreateBall () {
 		ballCreator.CreateBall (index);
 	}
 
