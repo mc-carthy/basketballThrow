@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -12,6 +13,8 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	private AudioClip rimHit0, rimHit1, bounce0, bounce1, net;
 	private float volume = 1.0f;
+	private int balls = 10;
+	private Text ballText;
 
 	private void Awake () {
 		MakeSingleton ();
@@ -22,6 +25,8 @@ public class GameController : MonoBehaviour {
 	private void OnLevelWasLoaded () {
 		if (SceneManager.GetActiveScene ().name == "main") {
 			CreateBall ();
+			ballText = GameObject.FindGameObjectWithTag ("ballText").GetComponent<Text> ();
+			ballText.text = "Balls: " + balls.ToString ();
 		}
 	}
 	public void SetBallIndex (int index) {
@@ -30,6 +35,19 @@ public class GameController : MonoBehaviour {
 
 	public void CreateBall () {
 		ballCreator.CreateBall (index);
+	}
+
+	public void IncrementBalls (int increment) {
+		balls += increment;
+		if (balls > 10) {
+			balls = 10;
+		}
+		ballText.text = "Balls: " + balls.ToString ();
+	}
+
+	public void DecrementBalls () {
+		balls--;
+		ballText.text = "Balls: " + balls.ToString ();
 	}
 
 	public void PlaySound (int id) {

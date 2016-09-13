@@ -17,6 +17,7 @@ public class BallController : MonoBehaviour {
 	private Rigidbody2D rb;
 	private Collider2D col;
 	private int touchedGround = 0;
+	private bool touchedRim;
 
 	private void Awake () {
 		rb = GetComponent<Rigidbody2D> ();
@@ -69,6 +70,7 @@ public class BallController : MonoBehaviour {
 		}
 
 		if (col.gameObject.tag == "rim") {
+			touchedRim = true;
 			if (GameController.instance != null) {
 				if (Random.Range (0, 2) > 1) { 
 					GameController.instance.PlaySound (1);
@@ -79,6 +81,7 @@ public class BallController : MonoBehaviour {
 		}
 
 		if (col.gameObject.tag == "backboard") {
+			touchedRim = true;
 			if (GameController.instance != null) {
 				if (Random.Range (0, 2) > 1) { 
 					GameController.instance.PlaySound (2);
@@ -92,6 +95,11 @@ public class BallController : MonoBehaviour {
 	private void OnTriggerEnter2D (Collider2D trig) {
 		if (trig.tag == "net") {
 			GameController.instance.PlaySound (0);
+			if (touchedRim) {
+				GameController.instance.IncrementBalls (1);
+			} else {
+				GameController.instance.IncrementBalls (2);
+			}
 		}
 	}
 
@@ -117,6 +125,7 @@ public class BallController : MonoBehaviour {
 				shoot = true;
 				aiming = false;
 				rb.AddForce (GetForce (Input.mousePosition));
+				GameController.instance.DecrementBalls ();
 				HidePath ();
 			}
 		}
