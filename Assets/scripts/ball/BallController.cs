@@ -16,6 +16,7 @@ public class BallController : MonoBehaviour {
 	private List<GameObject> projectilePath = new List<GameObject>();
 	private Rigidbody2D rb;
 	private Collider2D col;
+	private int touchedGround = 0;
 
 	private void Awake () {
 		rb = GetComponent<Rigidbody2D> ();
@@ -54,6 +55,43 @@ public class BallController : MonoBehaviour {
 	private void OnCollisionEnter2D (Collision2D col) {
 		if (col.gameObject.tag == "ground") {
 			hitGround = true;
+			touchedGround++;
+
+			if (touchedGround <= 3) {
+				if (GameController.instance != null) {
+					if (Random.Range (0, 2) > 1) { 
+						GameController.instance.PlaySound (2);
+					} else {
+						GameController.instance.PlaySound (3);
+					}
+				}
+			}
+		}
+
+		if (col.gameObject.tag == "rim") {
+			if (GameController.instance != null) {
+				if (Random.Range (0, 2) > 1) { 
+					GameController.instance.PlaySound (1);
+				} else {
+					GameController.instance.PlaySound (4);
+				}
+			}
+		}
+
+		if (col.gameObject.tag == "backboard") {
+			if (GameController.instance != null) {
+				if (Random.Range (0, 2) > 1) { 
+					GameController.instance.PlaySound (2);
+				} else {
+					GameController.instance.PlaySound (3);
+				}
+			}
+		}
+	}
+
+	private void OnTriggerEnter2D (Collider2D trig) {
+		if (trig.tag == "net") {
+			GameController.instance.PlaySound (0);
 		}
 	}
 
